@@ -18,6 +18,11 @@ public class UI {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static ChessPosition readChessPosition(Scanner sc) {
         try {
             String s = sc.nextLine();
@@ -26,7 +31,7 @@ public class UI {
             return new ChessPosition(column, row);
         }
         catch (RuntimeException e){
-            throw new InputMismatchException("Invalid combination." +
+            throw new InputMismatchException("Invalid combination. " +
                     "Valid expressions range from A1 to H8.");
         }
     }
