@@ -49,6 +49,9 @@ public class ChessMatch {
         if (!board.thereIsAPiece(position)) {
             throw new ChessException("Source position is empty.");
         }
+        if (board.piece(position).isStuck()) {
+            throw new ChessException("This piece is stuck.");
+        }
     }
 
     private void placeNewPiece(char column, int row, ChessPiece piece) {
