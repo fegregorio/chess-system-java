@@ -33,6 +33,7 @@ public class ChessMatch {
         Position source = sourcePos.toPosition();
         Position target = targetPos.toPosition();
         validateSourcePosition(source);
+        validateTargetPosition(source, target);
         Piece capturedPiece = makeMove(source, target);
         return (ChessPiece) capturedPiece;
     }
@@ -49,8 +50,14 @@ public class ChessMatch {
         if (!board.thereIsAPiece(position)) {
             throw new ChessException("Source position is empty.");
         }
-        if (board.piece(position).isStuck()) {
+        if (!board.piece(position).canMove()) {
             throw new ChessException("This piece is stuck.");
+        }
+    }
+
+    private void validateTargetPosition(Position source, Position target) {
+        if (!board.piece(source).isMovePossible(target)) {
+            throw new ChessException("Invalid movement for chosen piece.");
         }
     }
 

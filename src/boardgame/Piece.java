@@ -19,15 +19,15 @@ public abstract class Piece {
         return possibleMoves()[position.getRow()][position.getColumn()];
     }
 
-    public boolean isStuck() {
+    public boolean canMove() {
         boolean[][] matrix = possibleMoves();
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length ; j++) {
                 if (matrix[i][j]) {
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 }
