@@ -18,6 +18,15 @@ public class UI {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -41,27 +50,42 @@ public class UI {
         for (int i = 0; i < pieces.length; i++) {
             System.out.print((i + 1) + " ");
             for (int j = 0; j < pieces.length; j++) {
-                printPiece(pieces[i][j]);
+                printPiece(pieces[i][j], false);
             }
             System.out.println();
         }
     }
 
-    private static void printPiece(ChessPiece piece) {
+    public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
+        System.out.println("  A B C D E F G H");
+        for (int i = 0; i < pieces.length; i++) {
+            System.out.print((i + 1) + " ");
+            for (int j = 0; j < pieces.length; j++) {
+                printPiece(pieces[i][j], possibleMoves[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    private static void printPiece(ChessPiece piece, boolean backgroundColor) {
+        if (backgroundColor) {
+            System.out.print(ANSI_GREEN_BACKGROUND);
+        }
+
         if (piece == null) {
             System.out.print("-");
         }
         else {
             switch (piece.getColor()) {
                 case WHITE:
-                    System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+                    System.out.print(ANSI_YELLOW + piece);
                     break;
 
                 case BLACK:
-                    System.out.print(ANSI_PURPLE + piece + ANSI_RESET);
+                    System.out.print(ANSI_PURPLE + piece);
                     break;
             }
         }
-        System.out.print(" ");
+        System.out.print(ANSI_RESET + " ");
     }
 }
