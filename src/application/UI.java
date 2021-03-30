@@ -54,6 +54,7 @@ public class UI {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
@@ -65,6 +66,7 @@ public class UI {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     private static void printPiece(ChessPiece piece, boolean backgroundColor) {
