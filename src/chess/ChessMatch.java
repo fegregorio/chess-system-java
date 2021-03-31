@@ -5,12 +5,16 @@ import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
+import chess.util.Util;
 
 public class ChessMatch {
 
     private int round;
     private Color currentPlayer;
     private Board board;
+
+    private final ChessPiece[] piecesOnTheBoard = new ChessPiece[32];
+    private final ChessPiece[] capturedPieces = new ChessPiece[32];
 
 
     public ChessMatch() {
@@ -56,6 +60,9 @@ public class ChessMatch {
         Piece p = board.removePiece(source);
         Piece capturedPiece = board.removePiece(target);
 
+        Util.arrRemove(capturedPiece, piecesOnTheBoard);
+        Util.arrAdd(capturedPiece, capturedPieces);
+
         board.placePiece(p, target);
         return capturedPiece;
     }
@@ -86,6 +93,7 @@ public class ChessMatch {
 
     private void placeNewPiece(char column, int row, ChessPiece piece) {
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
+        piecesOnTheBoard[Util.getLength(piecesOnTheBoard)] = piece;
     }
 
     private void initialSetup() {
