@@ -17,7 +17,7 @@ public class Program {
         ChessMatch chessMatch = new ChessMatch();
         ChessPiece[] captured = new ChessPiece[31];
 
-        do {
+        while (!chessMatch.isCheckmate()) {
             try {
                 UI.clearScreen();
                 UI.printMatch(chessMatch, captured);
@@ -43,6 +43,8 @@ public class Program {
                 System.out.println(e.getMessage());
                 sc.nextLine();
             }
-        } while (true);
+        }
+        UI.clearScreen();
+        UI.printMatch(chessMatch, captured);
     }
 }

@@ -13,6 +13,7 @@ public class ChessMatch {
     private Color currentPlayer;
     private Board board;
     private boolean check;
+    private boolean checkmate;
 
     private final ChessPiece[] piecesOnTheBoard = new ChessPiece[32];
     private final ChessPiece[] capturedPieces = new ChessPiece[32];
@@ -29,6 +30,7 @@ public class ChessMatch {
     public int getRound() { return round; }
     public Color getCurrentPlayer() { return currentPlayer; }
     public boolean isCheck() { return check; }
+    public boolean isCheckmate() { return checkmate; }
 
     public ChessPiece[][] getPieces() {
         ChessPiece[][] matrix = new ChessPiece[board.getRows()][board.getColumns()];
@@ -62,7 +64,12 @@ public class ChessMatch {
 
         check = testCheck(enemy(currentPlayer));
 
-        nextRound();
+        if (testCheckmate(enemy(currentPlayer))) {
+            checkmate = true;
+        }
+        else {
+            nextRound();
+        }
         return (ChessPiece) capturedPiece;
     }
 
@@ -136,9 +143,9 @@ public class ChessMatch {
                     Util.arrAdd(c, enemies);
                 }
             }
-            else {
+            /*else {
                 break;
-            }
+            }*/
         }
 
         for (ChessPiece c : enemies) {
@@ -148,22 +155,59 @@ public class ChessMatch {
                     return true;
                 }
             }
-            else {
-                break;
-            }
         }
         return false;
     }
 
+    private boolean testCheckmate(Color color) {
+        if (!testCheck(color)) {
+            return false;
+        }
+
+        ChessPiece[] allies = new ChessPiece[15];
+        for (ChessPiece c : piecesOnTheBoard) {
+            if (c != null) {
+                if (c.getColor() == color) {
+                    Util.arrAdd(c, allies);
+                }
+            }
+        }
+
+        for (ChessPiece c : allies) {
+            if (c != null) {
+                boolean[][] matrix = c.possibleMoves();
+                for (int i = 0; i < board.getRows(); i++) {
+                    for (int j = 0; i < board.getColumns(); i++) {
+                        if (matrix[i][j]) {
+                            Position source = c.getChessPosition().toPosition();
+                            Position target = new Position(i, j);
+
+                            ChessPiece capturedPiece = (ChessPiece) makeMove(source, target);
+
+                            if (!testCheck(color)) {
+                                undoMove(source, target, capturedPiece);
+                                return false;
+                            }
+                            undoMove(source, target, capturedPiece);
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     private void placeNewPiece(char column, int row, ChessPiece piece) {
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
-        piecesOnTheBoard[Util.getLength(piecesOnTheBoard)] = piece;
+        Util.arrAdd(piece, piecesOnTheBoard);
     }
 
     private void initialSetup() {
-        placeNewPiece('A', 1, new Rook(board, Color.BLACK));
-        placeNewPiece('E', 1, new King(board, Color.BLACK));
-        placeNewPiece('A', 8, new Rook(board, Color.WHITE));
-        placeNewPiece('E', 8, new King(board, Color.WHITE));
+        placeNewPiece('B', 8, new Rook(board, Color.BLACK));
+        placeNewPiece('A', 8, new King(board, Color.BLACK));
+
+        placeNewPiece('H', 7, new Rook(board, Color.WHITE));
+        placeNewPiece('D', 1, new Rook(board, Color.WHITE));
+        placeNewPiece('E', 1, new King(board, Color.WHITE));
     }
 }
