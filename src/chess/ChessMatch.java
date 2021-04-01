@@ -74,10 +74,11 @@ public class ChessMatch {
     }
 
     private Piece makeMove(Position source, Position target) {
-        Piece p = board.removePiece(source);
+        ChessPiece p = (ChessPiece) board.removePiece(source);
+        p.increaseMoveCount();
         Piece capturedPiece = board.removePiece(target);
 
-        Util.arrRemove(capturedPiece, piecesOnTheBoard);
+        Util.arrRemove((ChessPiece) capturedPiece, piecesOnTheBoard);
         Util.arrAdd(capturedPiece, capturedPieces);
 
         board.placePiece(p, target);
@@ -85,12 +86,13 @@ public class ChessMatch {
     }
 
     private void undoMove(Position source, Position target, Piece capturedPiece) {
-        Piece p = board.removePiece(target);
+        ChessPiece p = (ChessPiece) board.removePiece(target);
+        p.decreaseMoveCount();
         board.placePiece(p, source);
 
         if (capturedPiece != null) {
             board.placePiece(capturedPiece, target);
-            Util.arrRemove(capturedPiece, capturedPieces);
+            Util.arrRemove((ChessPiece) capturedPiece, capturedPieces);
             Util.arrAdd(capturedPiece, piecesOnTheBoard);
         }
     }
@@ -136,16 +138,13 @@ public class ChessMatch {
     private boolean testCheck(Color color) {
         Position kingPosition = king(color).getChessPosition().toPosition();
 
-        ChessPiece[] enemies = new ChessPiece[Util.getLength(piecesOnTheBoard)];
+        ChessPiece[] enemies = new ChessPiece[16];
         for (ChessPiece c : piecesOnTheBoard) {
             if (c != null) {
                 if (c.getColor() == enemy(color)) {
                     Util.arrAdd(c, enemies);
                 }
             }
-            /*else {
-                break;
-            }*/
         }
 
         for (ChessPiece c : enemies) {
@@ -177,7 +176,7 @@ public class ChessMatch {
             if (c != null) {
                 boolean[][] matrix = c.possibleMoves();
                 for (int i = 0; i < board.getRows(); i++) {
-                    for (int j = 0; i < board.getColumns(); i++) {
+                    for (int j = 0; j < board.getColumns(); j++) {
                         if (matrix[i][j]) {
                             Position source = c.getChessPosition().toPosition();
                             Position target = new Position(i, j);

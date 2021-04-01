@@ -18,13 +18,11 @@ public class Util {
         return count;
     }
 
-    public static void arrRemove(Piece captured, ChessPiece[] pieces) {
-        if (captured != null) {
-            for (int i = 0; i < Util.getLength(pieces); i++) {
-                if (pieces[i] == captured) {
-                    pieces[i] = null;
-                    break;
-                }
+    public static void arrRemove(ChessPiece captured, ChessPiece[] pieces) {
+        for (int i = 0; i < pieces.length; i++) {
+            if (pieces[i] == captured) {
+                pieces[i] = null;
+                break;
             }
         }
     }
