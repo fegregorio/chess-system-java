@@ -12,6 +12,7 @@ public class ChessMatch {
     private int round;
     private Color currentPlayer;
     private Board board;
+    private boolean check;
 
     private final ChessPiece[] piecesOnTheBoard = new ChessPiece[32];
     private final ChessPiece[] capturedPieces = new ChessPiece[32];
@@ -27,6 +28,7 @@ public class ChessMatch {
 
     public int getRound() { return round; }
     public Color getCurrentPlayer() { return currentPlayer; }
+    public boolean isCheck() { return check; }
 
     public ChessPiece[][] getPieces() {
         ChessPiece[][] matrix = new ChessPiece[board.getRows()][board.getColumns()];
@@ -52,6 +54,14 @@ public class ChessMatch {
         validateSourcePosition(source);
         validateTargetPosition(source, target);
         Piece capturedPiece = makeMove(source, target);
+
+        if (testCheck(currentPlayer)) {
+            undoMove(source, target, capturedPiece);
+            throw new ChessException("Illegal move: One does not simply self-check.");
+        }
+
+        check = testCheck(enemy(currentPlayer));
+
         nextRound();
         return (ChessPiece) capturedPiece;
     }
@@ -67,12 +77,23 @@ public class ChessMatch {
         return capturedPiece;
     }
 
+    private void undoMove(Position source, Position target, Piece capturedPiece) {
+        Piece p = board.removePiece(target);
+        board.placePiece(p, source);
+
+        if (capturedPiece != null) {
+            board.placePiece(capturedPiece, target);
+            Util.arrRemove(capturedPiece, capturedPieces);
+            Util.arrAdd(capturedPiece, piecesOnTheBoard);
+        }
+    }
+
     private void validateSourcePosition(Position position) {
         if (!board.thereIsAPiece(position)) {
             throw new ChessException("Source position is empty.");
         }
         if (currentPlayer != ((ChessPiece) board.piece(position)).getColor()) {
-            throw new ChessException(String.format("Current turn is %s's",
+            throw new ChessException(String.format("Current turn is %ss'",
                     currentPlayer.toString()));
         }
         if (!board.piece(position).canMove()) {
@@ -89,6 +110,49 @@ public class ChessMatch {
     private void nextRound() {
         round++;
         currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
+    }
+
+    private Color enemy(Color color) {
+        return (color == Color.WHITE) ? Color.BLACK : Color.WHITE;
+    }
+
+    private ChessPiece king(Color color) {
+        for (ChessPiece c : piecesOnTheBoard) {
+            if (c != null && c.getColor() == color && c instanceof King) {
+                return c;
+            }
+        }
+        throw new IllegalStateException(String.format(
+                "%s king not found on board.", color));
+    }
+
+    private boolean testCheck(Color color) {
+        Position kingPosition = king(color).getChessPosition().toPosition();
+
+        ChessPiece[] enemies = new ChessPiece[Util.getLength(piecesOnTheBoard)];
+        for (ChessPiece c : piecesOnTheBoard) {
+            if (c != null) {
+                if (c.getColor() == enemy(color)) {
+                    Util.arrAdd(c, enemies);
+                }
+            }
+            else {
+                break;
+            }
+        }
+
+        for (ChessPiece c : enemies) {
+            if (c != null) {
+                boolean[][] matrix = c.possibleMoves();
+                if (matrix[kingPosition.getRow()][kingPosition.getColumn()]) {
+                    return true;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        return false;
     }
 
     private void placeNewPiece(char column, int row, ChessPiece piece) {

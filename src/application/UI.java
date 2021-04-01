@@ -54,6 +54,9 @@ public class UI {
         printCapturedPieces(captured);
         System.out.println("Round: " + chessMatch.getRound());
         System.out.printf("%s's turn.%n", chessMatch.getCurrentPlayer().toString());
+        if (chessMatch.isCheck()) {
+            System.out.println("Check.");
+        }
     }
 
     public static void printBoard(ChessPiece[][] pieces){

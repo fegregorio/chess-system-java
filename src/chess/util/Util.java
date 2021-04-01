@@ -11,6 +11,9 @@ public class Util {
             if (c != null) {
                 count++;
             }
+            else {
+                break;
+            }
         }
         return count;
     }
@@ -20,6 +23,7 @@ public class Util {
             for (int i = 0; i < Util.getLength(pieces); i++) {
                 if (pieces[i] == captured) {
                     pieces[i] = null;
+                    break;
                 }
             }
         }
