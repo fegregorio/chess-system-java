@@ -2,12 +2,18 @@ package chess.pieces;
 
 import boardgame.Board;
 import boardgame.Position;
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.Color;
 
 public class Pawn extends ChessPiece {
 
-    public Pawn(Board board, Color color) { super(board, color); }
+    private ChessMatch chessMatch;
+
+    public Pawn(Board board, Color color, ChessMatch chessMatch) {
+        super(board, color);
+        this.chessMatch = chessMatch;
+    }
 
 
     @Override
@@ -42,6 +48,21 @@ public class Pawn extends ChessPiece {
                 if (getBoard().positionExists(p) && isThereAnEnemy(p)) {
                     matrix[p.getRow()][p.getColumn()] = true;
                 }
+
+                // en passant
+                if (position.getRow() == 3) {
+                    p.setValues(position.getRow(), position.getColumn() - 1);
+                    if (getBoard().positionExists(p) && isThereAnEnemy(p) &&
+                            getBoard().piece(p) == chessMatch.getVulnerablePawn()) {
+                        matrix[p.getRow() - 1][p.getColumn()] = true;
+                    }
+                    p.setValues(position.getRow(), position.getColumn() + 1);
+                    if (getBoard().positionExists(p) && isThereAnEnemy(p) &&
+                            getBoard().piece(p) == chessMatch.getVulnerablePawn()) {
+                        matrix[p.getRow() - 1][p.getColumn()] = true;
+                    }
+                }
+
                 break;
 
             case BLACK:
@@ -66,6 +87,21 @@ public class Pawn extends ChessPiece {
                 if (getBoard().positionExists(p) && isThereAnEnemy(p)) {
                     matrix[p.getRow()][p.getColumn()] = true;
                 }
+
+                // en passant
+                if (position.getRow() == 4) {
+                    p.setValues(position.getRow(), position.getColumn() - 1);
+                    if (getBoard().positionExists(p) && isThereAnEnemy(p) &&
+                            getBoard().piece(p) == chessMatch.getVulnerablePawn()) {
+                        matrix[p.getRow() + 1][p.getColumn()] = true;
+                    }
+                    p.setValues(position.getRow(), position.getColumn() + 1);
+                    if (getBoard().positionExists(p) && isThereAnEnemy(p) &&
+                            getBoard().piece(p) == chessMatch.getVulnerablePawn()) {
+                        matrix[p.getRow() + 1][p.getColumn()] = true;
+                    }
+                }
+
                 break;
         }
         return matrix;
