@@ -279,11 +279,11 @@ public class ChessMatch {
         placeNewPiece('H', 7, new Pawn(board, Color.WHITE));
         placeNewPiece('A', 8, new Rook(board, Color.WHITE));
         placeNewPiece('H', 8, new Rook(board, Color.WHITE));
-        placeNewPiece('B', 6, new Knight(board, Color.WHITE));
-        placeNewPiece('G', 6, new Knight(board, Color.WHITE));
-        placeNewPiece('C', 6, new Bishop(board, Color.WHITE));
-        placeNewPiece('F', 6, new Bishop(board, Color.WHITE));
-        placeNewPiece('D', 6, new Queen(board, Color.WHITE));
+        placeNewPiece('B', 8, new Knight(board, Color.WHITE));
+        placeNewPiece('G', 8, new Knight(board, Color.WHITE));
+        placeNewPiece('C', 8, new Bishop(board, Color.WHITE));
+        placeNewPiece('F', 8, new Bishop(board, Color.WHITE));
+        placeNewPiece('D', 8, new Queen(board, Color.WHITE));
         placeNewPiece('E', 8, new King(board, Color.WHITE, this));
     }
 }
