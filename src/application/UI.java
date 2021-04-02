@@ -93,7 +93,7 @@ public class UI {
 
     private static void printPiece(ChessPiece piece, boolean backgroundColor) {
         if (backgroundColor) {
-            System.out.print(ANSI_BLUE_BACKGROUND);
+            System.out.print(ANSI_GREEN_BACKGROUND);
         }
 
         if (piece == null) {
