@@ -55,7 +55,7 @@ public class UI {
         System.out.println("Round: " + chessMatch.getRound());
 
         if (!chessMatch.isCheckmate()) {
-            System.out.printf("%s's turn. ", chessMatch.getCurrentPlayer().toString());
+            System.out.printf("%ss' turn. ", chessMatch.getCurrentPlayer().toString());
             if (chessMatch.isCheck()) {
                 System.out.print("Check.");
             }

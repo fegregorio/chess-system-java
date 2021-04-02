@@ -162,7 +162,7 @@ public class ChessMatch {
             return false;
         }
 
-        ChessPiece[] allies = new ChessPiece[15];
+        ChessPiece[] allies = new ChessPiece[16];
         for (ChessPiece c : piecesOnTheBoard) {
             if (c != null) {
                 if (c.getColor() == color) {
@@ -215,6 +215,7 @@ public class ChessMatch {
         placeNewPiece('G', 1, new Knight(board, Color.BLACK));
         placeNewPiece('C', 1, new Bishop(board, Color.BLACK));
         placeNewPiece('F', 1, new Bishop(board, Color.BLACK));
+        placeNewPiece('D', 1, new Queen(board, Color.BLACK));
         placeNewPiece('E', 1, new King(board, Color.BLACK));
 
         placeNewPiece('A', 7, new Pawn(board, Color.WHITE));
@@ -231,6 +232,7 @@ public class ChessMatch {
         placeNewPiece('G', 8, new Knight(board, Color.WHITE));
         placeNewPiece('C', 8, new Bishop(board, Color.WHITE));
         placeNewPiece('F', 8, new Bishop(board, Color.WHITE));
+        placeNewPiece('D', 8, new Queen(board, Color.WHITE));
         placeNewPiece('E', 8, new King(board, Color.WHITE));
     }
 }

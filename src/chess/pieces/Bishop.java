@@ -43,21 +43,21 @@ public class Bishop extends ChessPiece {
             matrix[p.getRow()][p.getColumn()] = true;
         }
 
-        // upright
-        p.setValues(position.getRow() - 1, position.getColumn() + 1);
-        while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
-            matrix[p.getRow()][p.getColumn()] = true;
-            p.setValues(p.getRow() - 1, p.getColumn() + 1);
-        }
-        if (getBoard().positionExists(p) && isThereAnEnemy(p)) {
-            matrix[p.getRow()][p.getColumn()] = true;
-        }
-
         // downright
         p.setValues(position.getRow() + 1, position.getColumn() + 1);
         while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
             matrix[p.getRow()][p.getColumn()] = true;
             p.setValues(p.getRow() + 1, p.getColumn() + 1);
+        }
+        if (getBoard().positionExists(p) && isThereAnEnemy(p)) {
+            matrix[p.getRow()][p.getColumn()] = true;
+        }
+
+        // upright
+        p.setValues(position.getRow() - 1, position.getColumn() + 1);
+        while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+            matrix[p.getRow()][p.getColumn()] = true;
+            p.setValues(p.getRow() - 1, p.getColumn() + 1);
         }
         if (getBoard().positionExists(p) && isThereAnEnemy(p)) {
             matrix[p.getRow()][p.getColumn()] = true;
