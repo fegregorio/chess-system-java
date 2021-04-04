@@ -6,8 +6,6 @@ import boardgame.Position;
 import chess.pieces.*;
 import chess.util.Util;
 
-import java.security.InvalidParameterException;
-
 public class ChessMatch {
 
     private int round;
@@ -103,7 +101,7 @@ public class ChessMatch {
             throw new IllegalStateException("There is no piece to be promoted.");
         }
         if (!piece.equals("Q") && !piece.equals("R") && !piece.equals("H") && !piece.equals("B")) {
-            throw new InvalidParameterException("Invalid piece. Valid options are Q, R, H and B");
+            return promotedPawn;
         }
 
         Position pos = promotedPawn.getChessPosition().toPosition();
