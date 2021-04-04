@@ -38,6 +38,12 @@ public class Program {
                     captured[Util.getLength(captured)] = capturedPiece;
                 }
 
+                if (chessMatch.getPromotedPawn() != null) {
+                    System.out.print("Choose a promotion option [B/H/R/Q]: ");
+                    String piece = sc.nextLine();
+                    chessMatch.replacePromotedPawn(piece);
+                }
+
             }
             catch (ChessException | InputMismatchException e) {
                 System.out.println(e.getMessage());
